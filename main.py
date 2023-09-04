@@ -10,29 +10,50 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'super secret key'
 
-def processImage(filename,operation):
+# def processImage(filename,operation):
+#     print(f"The file name is {filename} and the operation is {operation}")
+#     img = cv2.imread(f"uploads/{filename}")
+#     match operation:
+#         case "cgray":
+#             imgProccesed = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+#             newfilename = f"static/{filename}"
+#             cv2.imwrite(newfilename,imgProccesed)
+#             return newfilename
+#         case "cpng":
+#             newfilename = f"static/{filename.split('.')[0]}.png"
+#             cv2.imwrite(newfilename,img)
+#             return newfilename
+#         case "cwebp":
+#             newfilename = f"static/{filename.split('.')[0]}.webp"
+#             cv2.imwrite(newfilename,img)
+#             return newfilename
+#         case "cjpg":
+#             newfilename = f"static/{filename.split('.')[0]}.jpg"
+#             cv2.imwrite(newfilename,img)
+#             return newfilename
+#     pass
+
+def processImage(filename, operation):
     print(f"The file name is {filename} and the operation is {operation}")
     img = cv2.imread(f"uploads/{filename}")
     match operation:
         case "cgray":
-            imgProccesed = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+            imgProcessed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             newfilename = f"static/{filename}"
-            cv2.imwrite(newfilename,imgProccesed)
+            cv2.imwrite(newfilename, imgProcessed)
             return newfilename
         case "cpng":
             newfilename = f"static/{filename.split('.')[0]}.png"
-            cv2.imwrite(newfilename,img)
+            cv2.imwrite(newfilename, img)
             return newfilename
         case "cwebp":
             newfilename = f"static/{filename.split('.')[0]}.webp"
-            cv2.imwrite(newfilename,img)
+            cv2.imwrite(newfilename, img)
             return newfilename
         case "cjpg":
             newfilename = f"static/{filename.split('.')[0]}.jpg"
-            cv2.imwrite(newfilename,img)
+            cv2.imwrite(newfilename, img)
             return newfilename
-        
-
     pass
 
 def allowed_file(filename): 
