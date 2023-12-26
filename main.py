@@ -83,6 +83,11 @@ def processImage(filename, operation):
             newfilename = f"static/{filename.split('.')[0]}.jpg"
             cv2.imwrite(newfilename, img)
             return newfilename
+        case "invert":
+            imgProcessed = cv2.bitwise_not(img)
+            newfilename = f"static/{filename}"
+            cv2.imwrite(newfilename, imgProcessed)
+            return newfilename
     pass
 
 def allowed_file(filename): 
