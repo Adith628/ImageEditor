@@ -6,10 +6,39 @@ import cv2
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'webp', 'png', 'jpg', 'jpeg', 'gif'}
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = 'super secret key'
+def create_app():
+    app = Flask(__name__)
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.secret_key = 'super secret key'
+    @app.route('/')
+    def home():
+        return render_template('index.html')
 
+    @app.route('/about')
+    def about():
+        return render_template('about.html')
+
+    @app.route('/edit', methods =["GET", "POST"])
+    def edit():
+        if request.method =="POST":
+            # check if the post request has the file part
+            operation = request.form.get('operation')
+            if 'file' not in request.files:
+                flash('No file part')
+                return "error"
+            file = request.files['file']
+            # If the user does not select a file, the browser submits an
+            # empty file without a filename.
+            if file.filename == '':
+                flash('No selected file')
+                return "error no selected file"
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                new = processImage(filename,operation)
+                flash(f"Your image has been processed and is available <a href='/{new}' target='_blank'> here</a>")
+                return render_template('index.html')
+    return app
 # def processImage(filename,operation):
 #     print(f"The file name is {filename} and the operation is {operation}")
 #     img = cv2.imread(f"uploads/{filename}")
@@ -60,33 +89,3 @@ def allowed_file(filename):
     return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/edit', methods =["GET", "POST"])
-def edit():
-    if request.method =="POST":
-        # check if the post request has the file part
-        operation = request.form.get('operation')
-        if 'file' not in request.files:
-            flash('No file part')
-            return "error"
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return "error no selected file"
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            new = processImage(filename,operation)
-            flash(f"Your image has been processed and is available <a href='/{new}' target='_blank'> here</a>")
-            return render_template('index.html')
-
-app.run(debug=True , port = 7000)
