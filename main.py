@@ -91,3 +91,4 @@ def allowed_file(filename):
 
 
 app = create_app()
+app.run()
