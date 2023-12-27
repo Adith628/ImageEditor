@@ -77,7 +77,7 @@ python main.py
 ## Usage
 1.Upload an image by clicking the "Choose File" button.
 2.Select the desired image processing operation.
-3.Click the "Process" button to see the result.
+3.Click the "Submit" button to see the result.
 4.Download the processed image if needed.
 
 ## Contributing
